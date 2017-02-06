@@ -1,10 +1,11 @@
 import mancala
-import random
+import mcts
 
 def play():
   b = mancala.Board()
   s = b.start()
-  while b.winner(s) == 0:
+  ai = mcts.MonteCarlo(b)
+  while not b.game_over(s):
     if b.current_player(s) == 1:
       print s[1:8]
       print s[8:15]
@@ -12,14 +13,14 @@ def play():
       while not p in b.legal_plays(s):
         p = int(input("Illegal. Pick again: "))
     else:
-      p = random.choice(b.legal_plays(s))
+      p = ai.get_play(s)
       print "Computer plays {}".format(p)
     s = b.next_state(s, p)
-  winner = b.winner(s)
-  if winner == 1:
+  score = b.score(s)
+  if score == 1:
     print "You win!"
-  if winner == 2:
+  if score == -1:
     print "Computer wins!"
-  if winner == -1:
+  if score == 0:
     print "Tie!"
 

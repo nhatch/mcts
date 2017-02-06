@@ -33,16 +33,23 @@ class Board(object):
       return state[idx] > 0
     return filter(legal, range(1,7))
 
-  def winner(self, state):
-    if len(self.legal_plays(state)) > 0:
-      return 0
+  def game_over(self, state):
+    return len(self.legal_plays(state)) == 0
+
+  # Returns the value of the state from the perspective of player 1.
+  # Mancala is zero-sum, so the value for player 2 is -1*score.
+  def score(self, state):
+    if not self.game_over(state):
+      # TODO implement heuristic
+      return 0.0
     def score(player):
       return sum(state[7*(player-1) + 1:7*player + 1])
     s1 = score(1)
     s2 = score(2)
     if s1 > s2:
-      return 1
+      return 1.0
     if s1 < s2:
-      return 2
+      return -1.0
     if s1 == s2:
-      return -1
+      return 0.0
+
