@@ -1,16 +1,15 @@
 # Monte Carlo Tree Search
-# TODO finish the tutorial
-# https://jeffbradberry.com/posts/2015/09/intro-to-monte-carlo-tree-search/
+# Modified from https://jeffbradberry.com/posts/2015/09/intro-to-monte-carlo-tree-search/
 
 import datetime
 import math
-from random import choice
+import random
 
 class MonteCarlo(object):
   def __init__(self, board):
     self.board = board
     self.calculation_time = datetime.timedelta(seconds=2)
-    self.max_plays = 100
+    self.max_plays = 150 # Mancala games are usually less than 150 moves long
     self.exploration_constant = 1.4
     # Stores total scores for each expanded state (accumulated over the course of the game)
     self.score = {}
@@ -35,7 +34,7 @@ class MonteCarlo(object):
         ) for p, S in plays_states
     ], reverse=True)
     for x in stats:
-      print "{3}: {0:.4f}% ({1:.2f} / {2})".format(*x)
+      print "{3}: {0:.4f} ({1:.1f} / {2})".format(*x)
     print "Maximum depth searched:", self.max_depth
     return stats[0][3]
 
@@ -44,8 +43,6 @@ class MonteCarlo(object):
     return avg * (1 if player == 1 else -1)
 
   def run_simulation(self, state):
-    # TODO try that optimization
-    current_player = self.board.current_player(state)
     visited_states = set()
     expand = True
     for t in xrange(1, self.max_plays + 1):
@@ -60,18 +57,18 @@ class MonteCarlo(object):
         ]
         _, play, state = max(bounds_plays)
       else:
-        play, state = choice(plays_states)
+        play, state = random.choice(plays_states)
       visited_states.add(state)
       if expand and not state in self.plays:
         expand = False
         self.plays[state] = 0
-        self.score[state] = 0
+        self.score[state] = 0.0
         if t > self.max_depth:
           self.max_depth = t
       if self.board.game_over(state):
         break
-    for state in visited_states:
-      if state in self.plays:
-        self.plays[state] += 1
-        self.score[state] += self.board.score(state)
+    for S in visited_states:
+      if S in self.plays:
+        self.plays[S] += 1
+        self.score[S] += self.board.score(state)
 

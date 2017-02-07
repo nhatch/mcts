@@ -40,7 +40,9 @@ class Board(object):
   # Mancala is zero-sum, so the value for player 2 is -1*score.
   def score(self, state):
     if not self.game_over(state):
-      # TODO implement heuristic
+      # TODO: Implement a heuristic score for unfinished games.
+      # We could also change the game-over scoring so that a higher
+      # win margin is preferred.
       return 0.0
     def score(player):
       return sum(state[7*(player-1) + 1:7*player + 1])
