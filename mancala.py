@@ -31,7 +31,7 @@ class Board(object):
     def legal(play):
       idx = 7*(player-1) + play
       return state[idx] > 0
-    return filter(legal, range(1,7))
+    return list(filter(legal, range(1,7)))
 
   def game_over(self, state):
     return len(self.legal_plays(state)) == 0

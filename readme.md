@@ -11,6 +11,6 @@ import play
 play.play()
 ```
 
-The possible moves are 1, 2, ..., 6 corresponding to the six buckets in your row. The seventh bucket is your store.
+The possible moves are 1, 2, ..., 6 corresponding to the six buckets in your row (the top one). The seventh bucket is your store.
 
 The capturing rule is not implemented.

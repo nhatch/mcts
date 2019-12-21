@@ -22,7 +22,7 @@ class MonteCarlo(object):
     while datetime.datetime.utcnow() - begin < self.calculation_time:
       self.run_simulation(state)
       games += 1
-    print games, datetime.datetime.utcnow() - begin
+    print(games, datetime.datetime.utcnow() - begin)
     legal = self.board.legal_plays(state)
     plays_states = [(p, self.board.next_state(state, p)) for p in legal]
     stats = sorted([
@@ -34,8 +34,8 @@ class MonteCarlo(object):
         ) for p, S in plays_states
     ], reverse=True)
     for x in stats:
-      print "{3}: {0:.4f} ({1:.1f} / {2})".format(*x)
-    print "Maximum depth searched:", self.max_depth
+      print("{3}: {0:.4f} ({1:.1f} / {2})".format(*x))
+    print("Maximum depth searched:", self.max_depth)
     return stats[0][3]
 
   def value(self, player, state):
@@ -45,7 +45,7 @@ class MonteCarlo(object):
   def run_simulation(self, state):
     visited_states = set()
     expand = True
-    for t in xrange(1, self.max_plays + 1):
+    for t in range(1, self.max_plays + 1):
       legal = self.board.legal_plays(state)
       plays_states = [(p, self.board.next_state(state, p)) for p in legal]
       if all(S in self.plays for _, S in plays_states):
